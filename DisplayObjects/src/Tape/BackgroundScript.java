@@ -1,142 +1,139 @@
 package RaceRenderer.Tape;
 
-import RaceRenderer.Common.CommonVariables;
+import RaceRenderer.Common.Functions;
 
-public class BackgroundScript implements CommonVariables {
+import static RaceRenderer.Common.CommonVariables.Alignment.AlignH_Left;
+import static RaceRenderer.Common.CommonVariables.Alignment.AlignH_Right;
+import static RaceRenderer.Common.CommonVariables.Color.WHITE;
 
-    boolean IsTransparent;
+public class BackgroundScript implements Functions {
 
-    double TrimSize;
-    double MarkInterval;
-    double MarkSize;
-    double MarkSmallSize;
-    double MarkLeftOffset;
-    double MarkWidth;
-    double MarkNumSpace;
-    double NumSize;
-    double BoxTrimSize;
-    double BoxNumSize;
-    double HalfMarkInterval;
-    double HalfBoxNumSize;
-    double HalfNumSize;
-    double HalfBoxHeight;
-    double Pad;
-    double SpaceY;
-    double Marks;
-    double SpaceInterval;
-    double MarkX1;
-    double MarkX2;
-    double NumX;
-    double HalfSpaceInterval;
-    double BaseOffsetY;
-    double RangeNum;
-    double ScaleNum;
+    Color ValueFontColor;
+    Color ValueFontOutlineColor;
+    Color ValueBoxColor;
+    Color ValueLineColor;
+    Color ScaleFontColor;
+    Color ScaleFontOutlineColor;
+    Color ScaleBigIntervalColor;
+    Color ScaleSmallIntervalColor;
 
-    Color BackColor;
-    Color TrimColor;
-    Color MarkColor;
-    Color BoxColor;
-    Color NumColor;
+    String title;
+
+    double centralPositionY;
+
+    double scaleValuePerPixel_Y;
+    double valueScale;
+    double valueScaleDecimal;
+    double valueMinimal;
+
+    double valuePositionX;
+    double valuePositionY;
+    double valueOffsetY;
+    double valueFontSize;
+    double valueScaleFontSize;
+    double valueScalePositionX;
+    double valueScalePositionY;
+    Color valueColor;
+    Alignment valueAlignment;
+
+    double valueScalePositionY_Max;
+    double valueScalePositionY_Min;
+
+    Color valueScaleColor;
+
+    Alignment valueScaleAlignment;
+
+    double boxWidth;
+    double boxHeight;
+    double boxOffsetX;
+    double boxOffsetY;
+    double boxThickness;
+    Color boxColor;
+    double boxLineOffsetX;
+    double boxLineOffsetY;
+    double boxLineWidth;
+    double boxLineThickness;
+    Color boxLineColor;
+
+    double valueLineOffsetX;
+    double valueLineOffsetY;
+    double valueLineWidth;
+    double valueLineThickness;
+    Color valueLineColor;
+    double stepBig;
+
+    double valueSmallLineOffsetX;
+    double valueSmallLineOffsetY;
+    double valueSmallLineWidth;
+    double valueSmallLineThickness;
+    Color valueSmallLineColor;
+    double stepSmall;
 
     public BackgroundScript() {
 
-        // If set to true, background and outer trim will not be drawn.
-        IsTransparent = true;
+        ValueFontColor = ColorA;
+        ValueFontOutlineColor = ColorB;
+        ValueBoxColor = ColorC;
+        ValueLineColor = ColorC;
+        ScaleFontColor = ColorD;
+        ScaleFontOutlineColor = ColorE;
+        ScaleBigIntervalColor = ColorF;
+        ScaleSmallIntervalColor = ColorG;
 
-        // Colors, Sizes, and Spacings.
-        BackColor = ColorA;
-        TrimColor = ColorB;
-        MarkColor = ColorC;
-        BoxColor = ColorD;
-        NumColor = ColorE;
+        title = "ALT,m";
+        SetTextOutline(WHITE);
+        DrawText(title, 0, 550, WHITE, 35, AlignH_Left);
 
-        // Outer trim thickness.
-        TrimSize = 4;
+        centralPositionY = SizeY / 2;
 
-        // Number marking interval (set 0 for automatic).
-        MarkInterval = 0;
+        scaleValuePerPixel_Y = 18;
+        valueScale = 10;
+        valueScaleDecimal = 0;
+        valueMinimal = 0;
 
-        // Normal mark size.
-        MarkSize = 5;
+        // Value format.
+        valuePositionX = 130;
+        valuePositionY = SizeY / 2;
+        valueOffsetY = -5;
+        valueFontSize = 40;
+        valueScaleFontSize = 30;
+        valueScalePositionX = 240;
+        valueScalePositionY = 5;
+        valueColor = ValueFontColor;
+        valueAlignment = AlignH_Right;
 
-        // Intermediate mark size.
-        MarkSmallSize = 3;
+        valueScalePositionY_Max = SizeY - 10;
+        valueScalePositionY_Min = 40;
+        valueScaleColor = ScaleFontColor;
+        valueScaleAlignment = AlignH_Right;
 
-        // Distance between left edge and mark dash.
-        MarkLeftOffset = 30;
+        // Value big lines.
+        valueLineOffsetX = 10;
+        valueLineOffsetY = -21;
+        valueLineWidth = 30;
+        valueLineThickness = 4;
+        valueLineColor = ValueLineColor;
+        stepBig = 10;
 
-        // Width of mark dash.
-        MarkWidth = 25;
+        // Value small lines.
+        valueSmallLineOffsetX = 26;
+        valueSmallLineOffsetY = -21;
+        valueSmallLineWidth = 10;
+        valueSmallLineThickness = 2;
+        valueSmallLineColor = ValueLineColor;
+        stepSmall = stepBig / 5;
 
-        // Distance between mark dash and its number label.
-        MarkNumSpace = 35;
-
-        // Font size for mark numbers.
-        NumSize = 52;
-
-        // Number box trim thickness.
-        BoxTrimSize = 2;
-
-        // Relative size of number displayed in box.
-        BoxNumSize = NumSize * 0.90;
-
-        HalfMarkInterval = MarkInterval / 2;
-        HalfBoxNumSize = BoxNumSize / 2;
-        HalfNumSize = NumSize / 2;
-
-        // Relative size of number box.
-        HalfBoxHeight = HalfNumSize * 1.2;
-
-        Pad = 8 + TrimSize;
-        SpaceY = SizeY - (Pad * 2);
-
-        // Now figure out how much display space will be between each mark interval.
-        // Can't change this without also changing drawing code.
-        Marks = 7;
-        SpaceInterval = SpaceY / Marks;
-
-        // Automatic numbering interval.
-        if(MarkInterval <= 0) {
-            if(DataRange > Marks * 1000) {
-                MarkInterval = 1000;
-            } else {
-                if(DataRange > Marks * 100) {
-                    MarkInterval = 100;
-                } else {
-                    if(DataRange > Marks * 10) {
-                        MarkInterval = 10;
-                    } else {
-                        MarkInterval = 1;
-                    }
-                }
-            }
-        }
-
-
-        // Draw the background.
-        if(!IsTransparent) {
-            DrawRect(Pad, Pad, SizeX - Pad, SizeY - Pad, BackColor, Filled);
-        }
-
-        // Draw trim around it.
-        if(!IsTransparent) {
-            DrawRect(Pad, Pad, SizeX - Pad, SizeY - Pad, TrimColor, TrimSize);
-        }
-
-        // Setup calcs for drawing marks and numbers.
-        // Mark's offset from left edge.
-        MarkX1 = Pad + MarkLeftOffset;
-
-        // Mark width.
-        MarkX2 = MarkX1 + MarkWidth;
-
-        // Number's offset from mark.
-        NumX = MarkX2 + MarkNumSpace;
-        HalfSpaceInterval = SpaceInterval / 2;
-
-        BaseOffsetY = Pad + HalfSpaceInterval;
-
-        RangeNum = MarkInterval * (Marks - 1);
-        ScaleNum = SpaceInterval / MarkInterval;
+        // Box around value format.
+        boxWidth = 8;
+        boxHeight = 50;
+        boxOffsetX = -130;
+        boxOffsetY = 10;
+        boxThickness = 2;
+        boxColor = ValueBoxColor;
+        boxLineOffsetX = boxWidth - 5;
+        boxLineOffsetY = boxHeight / 2 * -1 + 3;
+        boxLineWidth = 200;
+        boxLineThickness = 1;
+        boxLineColor = ValueBoxColor;
     }
 }

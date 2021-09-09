@@ -4,134 +4,365 @@ import RaceRenderer.Common.ForegroundVariables;
 
 public class ForegroundScript extends BackgroundScript implements ForegroundVariables {
 
-    double StartNum;
-    int NoScroll;
-    double MidNum;
-    double EndNum;
-    double OffsetY;
-    double Num;
-    double X;
-    double Y;
-    double V;
-    double BoxX1;
-    double BoxX2;
-    double BoxY1;
-    double BoxY2;
+    double value;
+
+    double floorVal;
+
+    double floor_plus_3;
+    double floor_plus_3_plus_4;
+    double floor_plus_3_plus_2;
+    double floor_plus_3_minus_2;
+    double floor_plus_3_minus_4;
+
+    double floor_plus_2;
+    double floor_plus_2_plus_4;
+    double floor_plus_2_plus_2;
+    double floor_plus_2_minus_2;
+    double floor_plus_2_minus_4;
+
+    double floor_plus_1;
+    double floor_plus_1_plus_4;
+    double floor_plus_1_plus_2;
+    double floor_plus_1_minus_2;
+    double floor_plus_1_minus_4;
+
+    double floor_plus_0_plus_4;
+    double floor_plus_0_plus_2;
+    double floor_plus_0_minus_2;
+    double floor_plus_0_minus_4;
+
+    double floor_minus_2;
+    double floor_minus_2_plus_4;
+    double floor_minus_2_plus_2;
+    double floor_minus_2_minus_2;
+    double floor_minus_2_minus_4;
+
+    double floor_minus_3;
+    double floor_minus_3_plus_4;
+    double floor_minus_3_plus_2;
+    double floor_minus_3_minus_2;
+    double floor_minus_3_minus_4;
+
+    double valueToShow;
+
+    double difference;
 
     public ForegroundScript() {
 
-        //Choose a starting number that encourages the pointer to be in the middle
-        StartNum = DataValue - (RangeNum / 2);
-        NoScroll = 0;
+        value = DataValue;
+        //value = DataValue + 99999;
 
-        if(StartNum + RangeNum > DataMax && !DataMaxAuto) {
-            StartNum = DataMax - RangeNum;
-            NoScroll = 1;
+        if(value < valueMinimal) {
+            value = valueMinimal;
         }
 
-        if(StartNum < DataMin && !DataMinAuto) {
-            StartNum = DataMin;
-            NoScroll = 1;
+        floorVal = Floor(value / valueScale) * valueScale;
+
+        floor_plus_3 = floorVal + stepBig * 3;
+        floor_plus_3_plus_4 = floor_plus_3 + stepSmall * 2;
+        floor_plus_3_plus_2 = floor_plus_3 + stepSmall;
+        floor_plus_3_minus_2 = floor_plus_3 - stepSmall;
+        floor_plus_3_minus_4 = floor_plus_3 - stepSmall * 2;
+
+        floor_plus_2 = floorVal + stepBig * 2;
+        floor_plus_2_plus_4 = floor_plus_2 + stepSmall * 2;
+        floor_plus_2_plus_2 = floor_plus_2 + stepSmall;
+        floor_plus_2_minus_2 = floor_plus_2 - stepSmall;
+        floor_plus_2_minus_4 = floor_plus_2 - stepSmall * 2;
+
+        floor_plus_1 = floorVal + stepBig;
+        floor_plus_1_plus_4 = floor_plus_1 + stepSmall * 2;
+        floor_plus_1_plus_2 = floor_plus_1 + stepSmall;
+        floor_plus_1_minus_2 = floor_plus_1 - stepSmall;
+        floor_plus_1_minus_4 = floor_plus_1 - stepSmall * 2;
+
+        floor_plus_0_plus_4 = floorVal + stepSmall * 2;
+        floor_plus_0_plus_2 = floorVal + stepSmall;
+        floor_plus_0_minus_2 = floorVal - stepSmall;
+        floor_plus_0_minus_4 = floorVal - stepSmall * 2;
+
+        floor_minus_2 = floorVal - stepBig;
+        floor_minus_2_plus_4 = floor_minus_2 + stepSmall * 2;
+        floor_minus_2_plus_2 = floor_minus_2 + stepSmall;
+        floor_minus_2_minus_2 = floor_minus_2 - stepSmall;
+        floor_minus_2_minus_4 = floor_minus_2 - stepSmall * 2;
+
+        floor_minus_3 = floorVal - stepBig * 2;
+        floor_minus_3_plus_4 = floor_minus_3 + stepSmall * 2;
+        floor_minus_3_plus_2 = floor_minus_3 + stepSmall;
+        floor_minus_3_minus_2 = floor_minus_3 - stepSmall;
+        floor_minus_3_minus_4 = floor_minus_3 - stepSmall * 2;
+
+// Draw scale values above central position.
+        SetTextOutline(ScaleFontOutlineColor);
+
+//////////////////////////////////////////////////////////////////////////////////////
+// Value +3+0.4.
+        valueToShow = floor_plus_3_plus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
         }
 
-        // Align it to MarkInterval.
-        StartNum = Floor(StartNum / MarkInterval) * MarkInterval;
-        EndNum = StartNum + RangeNum;
-
-        OffsetY = BaseOffsetY;
-        if(NoScroll == 0) {
-            MidNum = StartNum + (RangeNum / 2);
-            OffsetY -= (DataValue - MidNum) * ScaleNum;
+// Value +3+0.2.
+        valueToShow = floor_plus_3_plus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
         }
 
-        //Draw marks and numbers, starting from the bottom up.
-        Num = StartNum;
-        Y = OffsetY + ((Num - StartNum) * ScaleNum);
-        if(Y >= Pad + HalfNumSize && Num >= DataMin) {
-            DrawLine(MarkX1, Y, MarkX2, Y, MarkColor, MarkSize);
-            DrawNumber(Num, 0, NumX, Y + HalfNumSize, MarkColor, NumSize, 0);
+// Value +3.
+        valueToShow = floor_plus_3;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
         }
 
-        if(Y + HalfSpaceInterval >= Pad + MarkSmallSize && Num + HalfMarkInterval >= DataMin) {
-            DrawLine(MarkX1, Y + HalfSpaceInterval, MarkX2, Y + HalfSpaceInterval, MarkColor, MarkSmallSize);
+// Value +3-0.2.
+        valueToShow = floor_plus_3_minus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
         }
 
-        Num += MarkInterval;
-        Y = OffsetY + ((Num - StartNum) * ScaleNum);
-        DrawLine(MarkX1, Y, MarkX2, Y, MarkColor, MarkSize);
-        DrawNumber(Num, 0, NumX, Y + HalfNumSize, MarkColor, NumSize, 0);
-
-        DrawLine(MarkX1, Y + HalfSpaceInterval, MarkX2, Y + HalfSpaceInterval, MarkColor, MarkSmallSize);
-
-        Num += MarkInterval;
-        Y = OffsetY + ((Num - StartNum) * ScaleNum);
-        DrawLine(MarkX1, Y, MarkX2, Y, MarkColor, MarkSize);
-        DrawNumber(Num, 0, NumX, Y + HalfNumSize, MarkColor, NumSize, 0);
-
-        DrawLine(MarkX1, Y + HalfSpaceInterval, MarkX2, Y + HalfSpaceInterval, MarkColor, MarkSmallSize);
-
-        Num += MarkInterval;
-        Y = OffsetY + ((Num - StartNum) * ScaleNum);
-        DrawLine(MarkX1, Y, MarkX2, Y, MarkColor, MarkSize);
-        DrawNumber(Num, 0, NumX, Y + HalfNumSize, MarkColor, NumSize, 0);
-
-        DrawLine(MarkX1, Y + HalfSpaceInterval, MarkX2, Y + HalfSpaceInterval, MarkColor, MarkSmallSize);
-
-        Num += MarkInterval;
-        Y = OffsetY + ((Num - StartNum) * ScaleNum);
-        DrawLine(MarkX1, Y, MarkX2, Y, MarkColor, MarkSize);
-        DrawNumber(Num, 0, NumX, Y + HalfNumSize, MarkColor, NumSize, 0);
-
-        DrawLine(MarkX1, Y + HalfSpaceInterval, MarkX2, Y + HalfSpaceInterval, MarkColor, MarkSmallSize);
-
-        Num += MarkInterval;
-        Y = OffsetY + ((Num - StartNum) * ScaleNum);
-        DrawLine(MarkX1, Y, MarkX2, Y, MarkColor, MarkSize);
-        DrawNumber(Num, 0, NumX, Y + HalfNumSize, MarkColor, NumSize, 0);
-
-        DrawLine(MarkX1, Y + HalfSpaceInterval, MarkX2, Y + HalfSpaceInterval, MarkColor, MarkSmallSize);
-
-        Num += MarkInterval;
-        Y = OffsetY + ((Num - StartNum) * ScaleNum);
-        DrawLine(MarkX1, Y, MarkX2, Y, MarkColor, MarkSize);
-        DrawNumber(Num, 0, NumX, Y + HalfNumSize, MarkColor, NumSize, 0);
-
-        if(Y + HalfSpaceInterval <= SizeY - (Pad + MarkSmallSize) && Num + HalfMarkInterval <= DataMax) {
-            DrawLine(MarkX1, Y + HalfSpaceInterval, MarkX2, Y + HalfSpaceInterval, MarkColor, MarkSmallSize);
+// Value +3-0.4.
+        valueToShow = floor_plus_3_minus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
         }
 
-        Num += MarkInterval;
-        Y = OffsetY + ((Num - StartNum) * ScaleNum);
-        if(Y + HalfNumSize <= SizeY - Pad && Num <= DataMax) {
-            DrawLine(MarkX1, Y, MarkX2, Y, MarkColor, MarkSize);
-            DrawNumber(Num, 0, NumX, Y + HalfNumSize, MarkColor, NumSize, 0);
+//////////////////////////////////////////////////////////////////////////////////////
+// Value +2+0.4.
+        valueToShow = floor_plus_2_plus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
         }
 
-        // Draw the current number in a box.
-        V = DataValue;
-        if(V < StartNum) {
-            V = StartNum;
-        } else {
-            if(V > EndNum) {
-                V = EndNum;
-            }
+// Value +2+0.2.
+        valueToShow = floor_plus_2_plus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
         }
 
-        Y = OffsetY + ((V - StartNum) * ScaleNum);
-        BoxX2 = SizeX - (Pad + TrimSize + BoxTrimSize + 6);
-        BoxY1 = Y - HalfBoxHeight;
-        BoxY2 = Y + HalfBoxHeight;
+// Value +2.
+        valueToShow = floor_plus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
+        }
 
-        // Draw box background.
-        DrawRect(NumX, BoxY1, BoxX2, BoxY2, BackColor, Filled);
+// Value +2-0.2.
+        valueToShow = floor_plus_2_minus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
 
-        // Draw box trim.
-        DrawRect(NumX, BoxY1, BoxX2, BoxY2, BoxColor, BoxTrimSize);
+// Value +2-0.4.
+        valueToShow = floor_plus_2_minus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
 
-        // Draw box pointer arrow on left.
-        DrawPoly3(NumX - (MarkNumSpace * 0.8), Y, NumX, BoxY1 - BoxTrimSize, NumX, BoxY2 + BoxTrimSize, BoxColor, Filled);
+//////////////////////////////////////////////////////////////////////////////////////
+// Value +1+0.4.
+        valueToShow = floor_plus_1_plus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
 
-        // Draw current value number in box.
-        DrawNumber(DataValue, 0, NumX + BoxTrimSize + 8, Y + HalfBoxNumSize, NumColor, BoxNumSize, 0);
+// Value +1+0.2.
+        valueToShow = floor_plus_1_plus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+// Value + 1.
+        valueToShow = floor_plus_1;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
+        }
+
+// Value +1-0.2.
+        valueToShow = floor_plus_1_minus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+// Value +1-0.4.
+        valueToShow = floor_plus_1_minus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+//////////////////////////////////////////////////////////////////////////////////////
+// Value: draw current value at central position.
+        SetTextOutline(ValueFontOutlineColor);
+        valueToShow = value;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawNumber(value, valueScaleDecimal, valuePositionX, valuePositionY, valueColor, valueFontSize, valueAlignment);
+
+            // Draw box around current value.
+            DrawRect(valuePositionX + boxOffsetX, valuePositionY + boxOffsetY, valuePositionX + boxWidth, valuePositionY - boxHeight, boxColor, boxThickness);
+            DrawLine(valuePositionX + boxLineOffsetX, valuePositionY + boxLineOffsetY, valuePositionX + boxLineOffsetX + boxLineWidth, valuePositionY + boxLineOffsetY, boxLineColor, boxLineThickness);
+        }
+
+//////////////////////////////////////////////////////////////////////////////////////
+// Value floor: Draw scale values right below central position.
+        SetTextOutline(ScaleFontOutlineColor);
+
+// Value 0+0.4.
+        valueToShow = floor_plus_0_plus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+// Value 0+0.2.
+        valueToShow = floor_plus_0_plus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+// Value 0 (floor);
+        valueToShow = floorVal;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
+        }
+
+// Value 0-0.2.
+        valueToShow = floor_plus_0_minus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+// Value 0-0.4.
+        valueToShow = floor_plus_0_minus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+//////////////////////////////////////////////////////////////////////////////////////
+// Value -2+0.4.
+        valueToShow = floor_minus_2_plus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+// Value -2+0.2.
+        valueToShow = floor_minus_2_plus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+// Value -2.
+        valueToShow = floor_minus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
+        }
+
+// Value -2-0.2.
+        valueToShow = floor_minus_2_minus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+// Value -2-0.4.
+        valueToShow = floor_minus_2_minus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+//////////////////////////////////////////////////////////////////////////////////////
+// Value -3+0.4.
+        valueToShow = floor_minus_3_plus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+// Value -3+0.2.
+        valueToShow = floor_minus_3_plus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+// Value -3.
+        valueToShow = floor_minus_3;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
+        }
+
+// Value -3-0.2.
+        valueToShow = floor_minus_3_minus_2;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
+
+// Value -3-0.4.
+        valueToShow = floor_minus_3_minus_4;
+        difference = valueToShow - value;
+        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+            DrawLine(valueScalePositionX + valueSmallLineOffsetX, valueScalePositionY + valueSmallLineOffsetY, valueScalePositionX + valueSmallLineOffsetX + valueSmallLineWidth, valueScalePositionY + valueSmallLineOffsetY, valueSmallLineColor, valueSmallLineThickness);
+        }
     }
 }
