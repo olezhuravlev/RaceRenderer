@@ -44,13 +44,16 @@ public class ForegroundScript extends BackgroundScript implements ForegroundVari
     double floor_minus_3_minus_4;
 
     double valueToShow;
-
     double difference;
+
+    Color fontColor;
+    Color outlineColor;
 
     public ForegroundScript() {
 
         value = DataValue;
-        //value = DataValue + 99999;
+        //value = DataValue + 99;
+        //value = 0;
 
         if(value < valueMinimal) {
             value = valueMinimal;
@@ -94,7 +97,7 @@ public class ForegroundScript extends BackgroundScript implements ForegroundVari
         floor_minus_3_minus_4 = floor_minus_3 - stepSmall * 2;
 
 // Draw scale values above central position.
-        SetTextOutline(ScaleFontOutlineColor);
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 // Value +3+0.4.
@@ -118,7 +121,14 @@ public class ForegroundScript extends BackgroundScript implements ForegroundVari
         difference = valueToShow - value;
         valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
         if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
-            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            fontColor = ScaleFontColor;
+            outlineColor = ScaleFontOutlineColor;
+            if(valueToShow < 0) {
+                fontColor = ScaleFontColor_Neg;
+                outlineColor = ScaleFontOutlineColor_Neg;
+            }
+            SetTextOutline(outlineColor);
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, fontColor, valueScaleFontSize, valueScaleAlignment);
             DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
         }
 
@@ -160,7 +170,14 @@ public class ForegroundScript extends BackgroundScript implements ForegroundVari
         difference = valueToShow - value;
         valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
         if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
-            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            fontColor = ScaleFontColor;
+            outlineColor = ScaleFontOutlineColor;
+            if(valueToShow < 0) {
+                fontColor = ScaleFontColor_Neg;
+                outlineColor = ScaleFontOutlineColor_Neg;
+            }
+            SetTextOutline(outlineColor);
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, fontColor, valueScaleFontSize, valueScaleAlignment);
             DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
         }
 
@@ -202,7 +219,14 @@ public class ForegroundScript extends BackgroundScript implements ForegroundVari
         difference = valueToShow - value;
         valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
         if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
-            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            fontColor = ScaleFontColor;
+            outlineColor = ScaleFontOutlineColor;
+            if(valueToShow < 0) {
+                fontColor = ScaleFontColor_Neg;
+                outlineColor = ScaleFontOutlineColor_Neg;
+            }
+            SetTextOutline(outlineColor);
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, fontColor, valueScaleFontSize, valueScaleAlignment);
             DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
         }
 
@@ -224,21 +248,15 @@ public class ForegroundScript extends BackgroundScript implements ForegroundVari
 
 //////////////////////////////////////////////////////////////////////////////////////
 // Value: draw current value at central position.
-        SetTextOutline(ValueFontOutlineColor);
-        valueToShow = value;
-        difference = valueToShow - value;
-        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
-        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
-            DrawNumber(value, valueScaleDecimal, valuePositionX, valuePositionY, valueColor, valueFontSize, valueAlignment);
-
-            // Draw box around current value.
-            DrawRect(valuePositionX + boxOffsetX, valuePositionY + boxOffsetY, valuePositionX + boxWidth, valuePositionY - boxHeight, boxColor, boxThickness);
-            DrawLine(valuePositionX + boxLineOffsetX, valuePositionY + boxLineOffsetY, valuePositionX + boxLineOffsetX + boxLineWidth, valuePositionY + boxLineOffsetY, boxLineColor, boxLineThickness);
-        }
+//        valueToShow = value;
+//        difference = valueToShow - value;
+//        valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
+//        if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
+//            DrawLine(centralPositionX + centralLinePositionOffsetX, centralPositionY + centralLinePositionOffsetY, centralPositionX + centralLinePositionOffsetX + centralLineWidth, centralPositionY + centralLinePositionOffsetY, centralLineColor, centralLineThickness);
+//        }
 
 //////////////////////////////////////////////////////////////////////////////////////
 // Value floor: Draw scale values right below central position.
-        SetTextOutline(ScaleFontOutlineColor);
 
 // Value 0+0.4.
         valueToShow = floor_plus_0_plus_4;
@@ -261,7 +279,14 @@ public class ForegroundScript extends BackgroundScript implements ForegroundVari
         difference = valueToShow - value;
         valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
         if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
-            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            fontColor = ScaleFontColor;
+            outlineColor = ScaleFontOutlineColor;
+            if(valueToShow < 0) {
+                fontColor = ScaleFontColor_Neg;
+                outlineColor = ScaleFontOutlineColor_Neg;
+            }
+            SetTextOutline(outlineColor);
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, fontColor, valueScaleFontSize, valueScaleAlignment);
             DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
         }
 
@@ -303,7 +328,14 @@ public class ForegroundScript extends BackgroundScript implements ForegroundVari
         difference = valueToShow - value;
         valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
         if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
-            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            fontColor = ScaleFontColor;
+            outlineColor = ScaleFontOutlineColor;
+            if(valueToShow < 0) {
+                fontColor = ScaleFontColor_Neg;
+                outlineColor = ScaleFontOutlineColor_Neg;
+            }
+            SetTextOutline(outlineColor);
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, fontColor, valueScaleFontSize, valueScaleAlignment);
             DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
         }
 
@@ -345,7 +377,14 @@ public class ForegroundScript extends BackgroundScript implements ForegroundVari
         difference = valueToShow - value;
         valueScalePositionY = centralPositionY + difference * scaleValuePerPixel_Y;
         if(valueToShow >= valueMinimal && valueScalePositionY_Min < valueScalePositionY && valueScalePositionY < valueScalePositionY_Max) {
-            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, valueScaleColor, valueScaleFontSize, valueScaleAlignment);
+            fontColor = ScaleFontColor;
+            outlineColor = ScaleFontOutlineColor;
+            if(valueToShow < 0) {
+                fontColor = ScaleFontColor_Neg;
+                outlineColor = ScaleFontOutlineColor_Neg;
+            }
+            SetTextOutline(outlineColor);
+            DrawNumber(valueToShow, valueScaleDecimal, valueScalePositionX, valueScalePositionY + valueOffsetY, fontColor, valueScaleFontSize, valueScaleAlignment);
             DrawLine(valueScalePositionX + valueLineOffsetX, valueScalePositionY + valueLineOffsetY, valueScalePositionX + valueLineOffsetX + valueLineWidth, valueScalePositionY + valueLineOffsetY, valueLineColor, valueLineThickness);
         }
 

@@ -4,21 +4,24 @@ import RaceRenderer.Common.Functions;
 
 import static RaceRenderer.Common.CommonVariables.Alignment.AlignH_Left;
 import static RaceRenderer.Common.CommonVariables.Alignment.AlignH_Right;
-import static RaceRenderer.Common.CommonVariables.Color.WHITE;
+import static RaceRenderer.Common.CommonVariables.Color.RED;
 
 public class BackgroundScript implements Functions {
 
-    Color ValueFontColor;
-    Color ValueFontOutlineColor;
-    Color ValueBoxColor;
-    Color ValueLineColor;
+    Color ValueCentralLineColor;
     Color ScaleFontColor;
     Color ScaleFontOutlineColor;
+    Color ScaleFontColor_Neg;
+    Color ScaleFontOutlineColor_Neg;
     Color ScaleBigIntervalColor;
     Color ScaleSmallIntervalColor;
+    Color TitleFontColor;
+    Color TitleFontOutlineColor;
 
-    String title;
+    String title1;
+    String title2;
 
+    double centralPositionX;
     double centralPositionY;
 
     double scaleValuePerPixel_Y;
@@ -26,7 +29,6 @@ public class BackgroundScript implements Functions {
     double valueScaleDecimal;
     double valueMinimal;
 
-    double valuePositionX;
     double valuePositionY;
     double valueOffsetY;
     double valueFontSize;
@@ -43,17 +45,11 @@ public class BackgroundScript implements Functions {
 
     Alignment valueScaleAlignment;
 
-    double boxWidth;
-    double boxHeight;
-    double boxOffsetX;
-    double boxOffsetY;
-    double boxThickness;
-    Color boxColor;
-    double boxLineOffsetX;
-    double boxLineOffsetY;
-    double boxLineWidth;
-    double boxLineThickness;
-    Color boxLineColor;
+    double centralLinePositionOffsetX;
+    double centralLinePositionOffsetY;
+    double centralLineWidth;
+    double centralLineThickness;
+    Color centralLineColor;
 
     double valueLineOffsetX;
     double valueLineOffsetY;
@@ -71,69 +67,67 @@ public class BackgroundScript implements Functions {
 
     public BackgroundScript() {
 
-        ValueFontColor = ColorA;
-        ValueFontOutlineColor = ColorB;
-        ValueBoxColor = ColorC;
-        ValueLineColor = ColorC;
-        ScaleFontColor = ColorD;
-        ScaleFontOutlineColor = ColorE;
-        ScaleBigIntervalColor = ColorF;
-        ScaleSmallIntervalColor = ColorG;
+        ScaleFontColor = ColorA;
+        ScaleFontOutlineColor = ColorB;
+        ScaleFontColor_Neg = ColorC;
+        ScaleFontOutlineColor_Neg = ColorD;
+        ScaleBigIntervalColor = ColorE;
+        ScaleSmallIntervalColor = ColorF;
+        TitleFontColor = ColorG;
+        TitleFontOutlineColor = ColorH;
+        ValueCentralLineColor = RED;
 
-        title = "ALT,m";
-        SetTextOutline(WHITE);
-        DrawText(title, 0, 550, WHITE, 35, AlignH_Left);
+        title1 = "VERT";
+        title2 = "m/s";
 
+        SetTextOutline(TitleFontOutlineColor);
+        DrawText(title1, 60, 240, TitleFontColor, 30, AlignH_Left);
+        DrawText(title2, 60, 215, TitleFontColor, 30, AlignH_Left);
+
+        centralPositionX = 0;
         centralPositionY = SizeY / 2;
 
-        scaleValuePerPixel_Y = 18;
         valueScale = 10;
-        valueScaleDecimal = 0;
-        valueMinimal = 0;
+        stepBig = 10;
+        scaleValuePerPixel_Y = 7;
 
-        // Value format.
-        valuePositionX = 130;
+        valueScaleDecimal = 0;
+        valueMinimal = -999999;
+
+// Value format.
         valuePositionY = SizeY / 2;
         valueOffsetY = -5;
         valueFontSize = 40;
         valueScaleFontSize = 30;
-        valueScalePositionX = 240;
-        valueScalePositionY = 5;
-        valueColor = ValueFontColor;
+        valueScalePositionX = 100;
+        valueScalePositionY = 0;
         valueAlignment = AlignH_Right;
+
+// Line of value format.
+        centralLinePositionOffsetX = 50;
+        centralLinePositionOffsetY = -21;
+        centralLineWidth = 100;
+        centralLineThickness = 2;
+        centralLineColor = ValueCentralLineColor;
 
         valueScalePositionY_Max = SizeY - 10;
         valueScalePositionY_Min = 40;
         valueScaleColor = ScaleFontColor;
-        valueScaleAlignment = AlignH_Right;
+        valueScaleAlignment = AlignH_Left;
 
-        // Value big lines.
-        valueLineOffsetX = 10;
+// Value big lines.
+        valueLineOffsetX = -40;
         valueLineOffsetY = -21;
         valueLineWidth = 30;
-        valueLineThickness = 4;
-        valueLineColor = ValueLineColor;
-        stepBig = 10;
+        valueLineThickness = 3;
+        valueLineColor = ScaleBigIntervalColor;
 
-        // Value small lines.
-        valueSmallLineOffsetX = 26;
+// Value small lines.
+        valueSmallLineOffsetX = -40;
         valueSmallLineOffsetY = -21;
         valueSmallLineWidth = 10;
         valueSmallLineThickness = 2;
-        valueSmallLineColor = ValueLineColor;
+        valueSmallLineColor = ScaleSmallIntervalColor;
         stepSmall = stepBig / 5;
-
-        // Box around value format.
-        boxWidth = 8;
-        boxHeight = 50;
-        boxOffsetX = -130;
-        boxOffsetY = 10;
-        boxThickness = 2;
-        boxColor = ValueBoxColor;
-        boxLineOffsetX = boxWidth - 5;
-        boxLineOffsetY = boxHeight / 2 * -1 + 3;
-        boxLineWidth = 200;
-        boxLineThickness = 1;
-        boxLineColor = ValueBoxColor;
     }
 }
